@@ -1,11 +1,12 @@
-package pl.strefakursow.podstawy;
+package pl.strefakursow.hibernate_assosiations1;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import pl.strefakursow.podstawy.entity.Employee;
+import pl.strefakursow.hibernate_assosiations1.entity.Company;
+import pl.strefakursow.hibernate_assosiations1.entity.CompanyDetail;
 
-public class SaveEntityApp {
+public class BidirectionalApp {
 
     public static void main(String[] args) {
 
@@ -16,7 +17,8 @@ public class SaveEntityApp {
         configuration.configure("hibernate.cfg.xml");
 
         //wczytanie adnotacji
-        configuration.addAnnotatedClass(Employee.class);
+        configuration.addAnnotatedClass(Company.class);
+        configuration.addAnnotatedClass(CompanyDetail.class);
 
         // stworzenie obiektu SessionFactory
         SessionFactory factory = configuration.buildSessionFactory();
@@ -24,23 +26,29 @@ public class SaveEntityApp {
         // pobranie sesji
         Session session = factory.getCurrentSession();
 
-        // stworzenie obiektu employee
-        Employee employee = Employee.builder()
-                .firstName("Jan")
-                .lastName("Kowalski")
-                .salary(10000)
+        CompanyDetail companyDetail = CompanyDetail.builder()
+                .residence("Poland")
+                .employeeNumber(33935)
                 .build();
 
-        // rozpoczęcie transakcji
+        Company company = Company.builder()
+                .name("KGHM")
+                .value(46946876)
+                .companyDetail(companyDetail)
+                .build();
+
+        companyDetail.setCompany(company);
+
         session.beginTransaction();
 
-        // zapisanie pracownika
-        session.save(employee);
+        session.persist(companyDetail);
 
-        // zakończenie transakcji
         session.getTransaction().commit();
+
 
         // zamknięcie obiektu SessionFactory
         factory.close();
+
     }
+
 }

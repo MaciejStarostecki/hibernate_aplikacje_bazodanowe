@@ -1,4 +1,4 @@
-package pl.strefakursow.entity;
+package pl.strefakursow.podstawy.entity;
 
 
 import jakarta.persistence.*;

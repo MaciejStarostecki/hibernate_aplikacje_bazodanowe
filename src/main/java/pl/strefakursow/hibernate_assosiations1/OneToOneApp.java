@@ -1,12 +1,12 @@
-package pl.strefakursow.hql;
+package pl.strefakursow.hibernate_assosiations1;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
-import pl.strefakursow.hql.entity.Employee;
+import pl.strefakursow.hibernate_assosiations1.entity.Company;
+import pl.strefakursow.hibernate_assosiations1.entity.CompanyDetail;
 
-public class UpdateApp {
+public class OneToOneApp {
 
     public static void main(String[] args) {
 
@@ -17,7 +17,8 @@ public class UpdateApp {
         configuration.configure("hibernate.cfg.xml");
 
         //wczytanie adnotacji
-        configuration.addAnnotatedClass(Employee.class);
+        configuration.addAnnotatedClass(Company.class);
+        configuration.addAnnotatedClass(CompanyDetail.class);
 
         // stworzenie obiektu SessionFactory
         SessionFactory factory = configuration.buildSessionFactory();
@@ -25,19 +26,26 @@ public class UpdateApp {
         // pobranie sesji
         Session session = factory.getCurrentSession();
 
-        int idEmployee = 116;
-        int salaryEmployee = 15000;
+        CompanyDetail companyDetail = CompanyDetail.builder()
+                .residence("Poland")
+                .employeeNumber(150)
+                .build();
+
+        Company company = Company.builder()
+                .name("Strefa Kursów")
+                .value(100000)
+                .companyDetail(companyDetail)
+                .build();
+
 
         session.beginTransaction();
 
-        String update = "update Employee e set e.salary=:salary where e.idEmployee=:idEmployee";
+        session.save(companyDetail);
+        session.save(company);
 
-        Query query = session.createQuery(update);
-        query.setParameter("salary", salaryEmployee);
-        query.setParameter("idEmployee", idEmployee);
-        query.executeUpdate();
 
         session.getTransaction().commit();
+
 
         // zamknięcie obiektu SessionFactory
         factory.close();

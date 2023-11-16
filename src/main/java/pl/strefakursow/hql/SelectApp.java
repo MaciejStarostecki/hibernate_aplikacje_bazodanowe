@@ -4,10 +4,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-import pl.strefakursow.entity.Employee;
+import pl.strefakursow.hql.entity.Employee;
 
 import java.util.List;
-import java.util.Objects;
 
 public class SelectApp {
 

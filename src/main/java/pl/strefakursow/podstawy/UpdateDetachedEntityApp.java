@@ -3,7 +3,7 @@ package pl.strefakursow.podstawy;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import pl.strefakursow.entity.Employee;
+import pl.strefakursow.podstawy.entity.Employee;
 
 public class UpdateDetachedEntityApp {
 
